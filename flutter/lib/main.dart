@@ -163,7 +163,7 @@ void runMainApp(bool startService) async {
       windowManager.hide();
     } else {
       windowManager.show();
-      windowManager.focus();
+      windowManager.minimize();
       // Move registration of active main window here to prevent from async visible check.
       rustDeskWinManager.registerActiveWindow(kWindowMainId);
     }
