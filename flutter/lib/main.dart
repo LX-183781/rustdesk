@@ -132,7 +132,7 @@ Future<void> initEnv(String appType) async {
   // Update the system theme.
   updateSystemWindowTheme();
 
-  KiaRequest().addListener();
+  // KiaRequest().addListener();
 }
 
 void runMainApp(bool startService) async {
