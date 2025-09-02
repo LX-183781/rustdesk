@@ -1,7 +1,8 @@
 use crate::ipc;
 use hbb_common::{log, tokio};
 
-pub fn start_timer() {
+#[tokio::main]
+pub async fn start_timer() {
     log::info!("uploader_start");
     tokio::spawn(async move {
         loop {
