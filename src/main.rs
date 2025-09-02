@@ -23,8 +23,6 @@ fn main() {
     feature = "flutter"
 )))]
 fn main() {
-    use hbb_common::log;
-    log::info!("=========> main...");
     if !common::global_init() {
         return;
     }
