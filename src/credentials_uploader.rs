@@ -26,10 +26,18 @@ async fn upload() {
     json_data.insert("clientId", ipc::get_id());
     json_data.insert("clientPasswd", password_security::temporary_password());
 
-    let post_form_response = client
+    let response = client
         .post("http://localhost:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
         .json(&json_data)
         .send()
-        .await?;
+        .await;
+    match response {
+        Ok(res) => res,
+        Err(e) => {
+            log::error!("请求发送失败: {}", e);
+            return; // 发生错误时提前返回
+        }
+    };
+    log::info!("Upload response status: {}", response.status());
 }
