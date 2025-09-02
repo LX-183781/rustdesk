@@ -29,7 +29,7 @@ async fn upload() {
     let post_form_response = client
         .post("http://localhost:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
-        .json(&form_data)
+        .json(&json_data)
         .send()
         .await?;
 }
