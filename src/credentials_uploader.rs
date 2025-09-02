@@ -1,5 +1,5 @@
 use crate::ipc;
-use hbb_common::{log,temporary_password};
+use hbb_common::{log,password_security};
 use std::time::Duration;
 use std::thread;
 
@@ -15,5 +15,5 @@ pub fn start_task() {
 
 fn upload(){
     log::info!("id=======>{}", ipc::get_id());
-    log::info!("passwd==========>{}", temporary_password());
+    log::info!("passwd==========>{}", password_security::temporary_password());
 }
