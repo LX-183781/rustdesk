@@ -32,12 +32,4 @@ async fn upload() {
         .json(&json_data)
         .send()
         .await;
-    match response {
-        Ok(res) => res,
-        Err(e) => {
-            log::error!("请求发送失败: {}", e);
-            return; // 发生错误时提前返回
-        }
-    };
-    log::info!("Upload response status: {}", response.status());
 }
