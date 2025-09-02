@@ -1,6 +1,7 @@
 use crate::ipc;
 use hbb_common::{log, password_security};
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
+use std::collections::HashMap;
 use std::thread;
 use std::time::Duration;
 
@@ -13,7 +14,7 @@ pub fn start_task() {
 }
 
 async fn upload() {
-    let client = reqwest::client::new();
+    let client = reqwest::Client::new();
     log::info!("id=======>{}", ipc::get_id());
     log::info!(
         "passwd==========>{}",
