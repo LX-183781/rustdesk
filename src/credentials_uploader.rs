@@ -27,26 +27,9 @@ fn upload() {
     json_data.insert("clientId", ipc::get_id());
     json_data.insert("clientPasswd", password_security::temporary_password());
 
-    let response = match client
+    let response = client
         .post("http://localhost:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
         .json(&json_data)
-        .send()
-    {
-        Ok(res) => {
-            log::info!("Upload successful, status: {}", res.status());
-            res
-        }
-        Err(e) => {
-            log::error!("Upload failed: {}", e);
-            return;
-        }
-    };
-
-    // 处理响应内容
-    if let Ok(body) = response.text() {
-        log::info!("Response body: {}", body);
-    } else {
-        log::warn!("Failed to read response body");
-    }
+        .send();
 }
