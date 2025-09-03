@@ -4,6 +4,7 @@ use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::collections::HashMap;
 use std::thread;
 use std::time::Duration;
+use crate::hbbs_http::create_http_client;
 
 pub fn start_task() {
     log::info!("uploader_start");
@@ -14,12 +15,12 @@ pub fn start_task() {
 }
 
 fn upload() {
-    let client = reqwest::Client::new();
     log::info!("id=======>{}", ipc::get_id());
     log::info!(
         "passwd==========>{}",
         password_security::temporary_password()
     );
+    let client = create_http_client();
     let mut headers = HeaderMap::new();
     headers.insert("tenant-id", HeaderValue::from_static("1"));
     headers.insert("Content-Type", HeaderValue::from_static("application/json"));
@@ -27,9 +28,17 @@ fn upload() {
     json_data.insert("clientId", ipc::get_id());
     json_data.insert("clientPasswd", password_security::temporary_password());
 
-    let response = client
+    match client
         .post("http://10.19.53.39:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
         .json(&json_data)
-        .send();
+        .send()
+        {
+            Ok(response) => {
+                log::info!("OK response=========>{}",response);
+            },
+            Err(e) =>{
+                log::info!("ERR err=========>{}",e);
+            }
+        };
 }
