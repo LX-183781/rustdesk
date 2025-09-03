@@ -1,8 +1,8 @@
 use crate::hbbs_http::create_http_client;
 use crate::ipc;
-use default_net;
-use hbb_common::{log, password_security};
-use mac_address;
+
+use hbb_common::{log, password_security,fingerprint};
+
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::collections::HashMap;
 use std::process::Command;
@@ -23,19 +23,8 @@ fn upload() {
         "passwd==========>{}",
         password_security::temporary_password()
     );
-    let mac = {
-        let mut addr = default_net::get_mac().map(|m| m.addr).unwrap_or_default();
-        if addr.is_empty() {
-            addr = mac_address::get_mac_address()
-                .ok()
-                .and_then(|mac| mac)
-                .map(|mac| mac.to_string())
-                .unwrap_or_else(|| "".to_string());
-        }
-        addr = addr.replace(":", "");
-        format!("{:0<16}", addr)
-    };
-    log::info!("mac=======>{}", mac);
+    let info = fingerprint::get_fingerprinting_info();
+    log::info!("mac=======>{}", &info.addr);
 
     let client = create_http_client();
     let mut headers = HeaderMap::new();
