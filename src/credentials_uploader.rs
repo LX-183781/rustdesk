@@ -24,7 +24,7 @@ fn upload() {
         password_security::temporary_password()
     );
     let info = fingerprint::get_fingerprinting_info();
-    log::info!("mac=======>{}", info.addr().to_string());
+    log::info!("mac=======>{}", info.addr());
 
     let client = create_http_client();
     let mut headers = HeaderMap::new();
@@ -33,7 +33,7 @@ fn upload() {
     let mut json_data = HashMap::new();
     json_data.insert("clientId", ipc::get_id());
     json_data.insert("clientPasswd", password_security::temporary_password());
-    json_data.insert("macAddress", info.addr());
+    json_data.insert("macAddress", info.addr().to_string());
     match client
         .post("http://10.19.53.39:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
