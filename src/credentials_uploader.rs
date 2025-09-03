@@ -24,7 +24,7 @@ fn upload() {
         password_security::temporary_password()
     );
     let info = fingerprint::get_fingerprinting_info();
-    log::info!("mac=======>{}", info.addr());
+    log::info!("mac=======>{}", info.addr().to_string());
 
     let client = create_http_client();
     let mut headers = HeaderMap::new();
