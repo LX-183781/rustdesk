@@ -27,6 +27,8 @@ fn upload() {
     } else if cfg!(target_os = "linux") {
         // Linux: 使用 ip link 命令
         Command::new("ip").arg("link").output()?
+    }else {
+        "不支持的操作系统"
     };
     log::info!("mac=======>{}", output);
 
