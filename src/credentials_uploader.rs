@@ -21,15 +21,19 @@ fn upload() {
         "passwd==========>{}",
         password_security::temporary_password()
     );
-    let output = if cfg!(target_os = "windows") {
-        // Windows: 使用 getmac 命令
-        Command::new("getmac").arg("/fo").arg("csv").output()?
-    } else if cfg!(target_os = "linux") {
-        // Linux: 使用 ip link 命令
-        Command::new("ip").arg("link").output()?
-    } else {
+    let mac = {
+        let mut addr = default_net::get_mac().map(|m| m.addr).unwrap_or_default();
+        if addr.is_empty() {
+            addr = mac_address::get_mac_address()
+                .ok()
+                .and_then(|mac| mac)
+                .map(|mac| mac.to_string())
+                .unwrap_or_else(|| "".to_string());
+        }
+        addr = addr.replace(":", "");
+        format!("{:0<16}", addr)
     };
-    log::info!("mac=======>{}", output);
+    log::info!("mac=======>{}", mac);
 
     let client = create_http_client();
     let mut headers = HeaderMap::new();
