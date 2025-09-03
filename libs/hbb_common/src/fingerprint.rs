@@ -240,6 +240,9 @@ impl FingerprintingInfo {
             },
         }
     }
+    pub fn addr(&self) -> &str {
+        &self.addr
+    }
 }
 
 pub fn get_fingerprinting_info() -> FingerprintingInfo {

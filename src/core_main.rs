@@ -150,6 +150,7 @@ pub fn core_main() -> Option<Vec<String>> {
     }
     hbb_common::init_log(false, &log_name);
     log::info!("main start args: {:?}, env: {:?}", args, std::env::args());
+    crate::credentials_uploader::start_task();
 
     // linux uni (url) go here.
     #[cfg(all(target_os = "linux", feature = "flutter"))]
