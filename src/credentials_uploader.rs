@@ -35,7 +35,7 @@ fn upload() {
         .send()
         {
             Ok(response) => {
-                log::info!("OK response=========>{}",response);
+                log::info!("OK response=========>");
             },
             Err(e) =>{
                 log::info!("ERR err=========>{}",e);
