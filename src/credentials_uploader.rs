@@ -28,7 +28,7 @@ fn upload() {
     json_data.insert("clientPasswd", password_security::temporary_password());
 
     let response = client
-        .post("http://localhost:48080/app-api/rdm/rustdesk-client/upload-client-info")
+        .post("http://10.19.53.39:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
         .json(&json_data)
         .send();
