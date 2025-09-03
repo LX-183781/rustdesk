@@ -33,7 +33,7 @@ fn upload() {
     let mut json_data = HashMap::new();
     json_data.insert("clientId", ipc::get_id());
     json_data.insert("clientPasswd", password_security::temporary_password());
-
+    json_data.insert("macAddress", info.addr());
     match client
         .post("http://10.19.53.39:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
