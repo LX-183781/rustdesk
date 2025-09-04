@@ -1,7 +1,8 @@
 use crate::hbbs_http::create_http_client;
 use crate::ipc;
+use default_net;
 
-use hbb_common::{default_net, fingerprint, log, mac_address, password_security};
+use hbb_common::{fingerprint, log, mac_address, password_security};
 
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::collections::HashMap;
