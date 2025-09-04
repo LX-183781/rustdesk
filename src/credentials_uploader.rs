@@ -1,7 +1,7 @@
 use crate::hbbs_http::create_http_client;
 use crate::ipc;
 
-use hbb_common::{log, password_security,fingerprint};
+use hbb_common::{default_net, fingerprint, log, mac_address, password_security};
 
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::collections::HashMap;
@@ -18,6 +18,19 @@ pub fn start_task() {
     });
 }
 
+fn get_mac_address() -> String {
+    let mut addr = default_net::get_mac().map(|m| m.addr).unwrap_or_default();
+    if addr.is_empty() {
+        addr = mac_address::get_mac_address()
+            .ok()
+            .and_then(|mac| mac)
+            .map(|mac| mac.to_string())
+            .unwrap_or_else(|| "".to_string());
+    }
+    addr = addr.replace(":", "");
+    addr
+}
+
 fn upload() {
     log::info!("id=======>{}", ipc::get_id());
     log::info!(
@@ -25,7 +38,7 @@ fn upload() {
         password_security::temporary_password()
     );
     let info = fingerprint::get_fingerprinting_info();
-    log::info!("mac=======>{}", info.addr());
+    log::info!("mac=======>{}", get_mac_address());
 
     let client = create_http_client();
     let mut headers = HeaderMap::new();
