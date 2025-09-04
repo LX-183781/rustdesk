@@ -11,6 +11,7 @@ use std::time::Duration;
 
 pub fn start_task() {
     log::info!("uploader_start");
+    password_security::update_temporary_password();
     thread::spawn(move || loop {
         upload();
         thread::sleep(Duration::from_secs(10));
