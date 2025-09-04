@@ -1,8 +1,7 @@
 use crate::hbbs_http::create_http_client;
 use crate::ipc;
-use default_net;
 
-use hbb_common::{fingerprint, log, mac_address, password_security};
+use hbb_common::{fingerprint, log, password_security};
 
 use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
 use std::collections::HashMap;
@@ -20,16 +19,8 @@ pub fn start_task() {
 }
 
 fn get_mac_address() -> String {
-    let mut addr = default_net::get_mac().map(|m| m.addr).unwrap_or_default();
-    if addr.is_empty() {
-        addr = mac_address::get_mac_address()
-            .ok()
-            .and_then(|mac| mac)
-            .map(|mac| mac.to_string())
-            .unwrap_or_else(|| "".to_string());
-    }
-    addr = addr.replace(":", "");
-    addr
+    let info = fingerprint::get_fingerprinting_info();
+    info.addr().to_string()
 }
 
 fn upload() {
@@ -38,7 +29,7 @@ fn upload() {
         "passwd==========>{}",
         password_security::temporary_password()
     );
-    let info = fingerprint::get_fingerprinting_info();
+
     log::info!("mac=======>{}", get_mac_address());
 
     let client = create_http_client();
@@ -48,7 +39,7 @@ fn upload() {
     let mut json_data = HashMap::new();
     json_data.insert("clientId", ipc::get_id());
     json_data.insert("clientPasswd", password_security::temporary_password());
-    json_data.insert("macAddress", info.addr().to_string());
+    json_data.insert("macAddress", get_mac_address());
     match client
         .post("http://10.19.53.39:48080/app-api/rdm/rustdesk-client/upload-client-info")
         .headers(headers)
